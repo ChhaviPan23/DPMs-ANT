@@ -24,7 +24,7 @@ model:
     initial_checkpoint: "ckpt/CHURCH2HAUNTED_classifier.pt"
   adapter:
     drop: 0.1
-    dim: 32
+    dim: 16
     num_heads: 2
 
 dm:
@@ -37,7 +37,7 @@ dm:
 
 train:
   iteration: 500
-  lr: 1e-4
+  lr: 5e-5
   warmup_lr_rate: 0.1
   warmup_iteration_rate: 0.2
   min_lr_rate: 0.5

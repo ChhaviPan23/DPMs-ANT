@@ -24,7 +24,7 @@ model:
     train: True
   adapter:
     drop: 0.1
-    dim: 32
+    dim: 16
     num_heads: 2
 
 train:

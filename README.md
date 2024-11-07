@@ -16,16 +16,19 @@ Download the dataset and put it in the `dataset` folder and Download the ckpt an
 
 ## Run
 
-
 ### (1) Train classifier model
 ```shell
-python train_discriminator.py --cfg configs/base_cls.yaml --source_data_path path_to_source_data --target_data_path path_to_target_data --initial_checkpoint initial_checkpoint/imagenet.ckpt --opts model.classifier.initial_checkpoint path_to_path_to_pretrain_classifier_checkpoint
+python train_discriminator.py --cfg configs/base_cls.yaml --source_data_path [path_to_source_data] --target_data_path [path_to_target_data] --opts model.classifier.initial_checkpoint [path__to_pretrain_classifier_checkpoint]
 ```
 
 ### (2) Train ANT model
 ```shell
-python train.py --cfg configs/base.yaml --source_data_path path_to_source_data --target_data_path path_to_target_data --opts model.classifier.initial_checkpoint path_to_path_to_finetuned_classifier_checkpoint  model.ddpm.initial_checkpoint path_to_path_to_pretrain_ddpm_checkpoint
+python train.py --cfg configs/base.yaml --source_data_path [path_to_source_data] --target_data_path [path_to_target_data] --opts model.classifier.initial_checkpoint [path_to_path_to_finetuned_classifier_checkpoint]  model.ddpm.initial_checkpoint [path_to_path_to_pretrain_ddpm_checkpoint]
 ```
+
+## BibTeX
+
+If this repo is useful to you, please cite our corresponding technical paper.
 
 ```bibtex
 @inproceedings{wang2024bridging,
