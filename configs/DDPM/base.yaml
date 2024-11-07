@@ -1,0 +1,60 @@
+data:
+  source_data_path: "./dataset/church"
+  target_data_path: "./dataset/haunted"
+  img_size: 256
+
+model:
+  batch_size: 5
+  ddpm:
+    target: "model.DDPM.diffusion.Model"
+    type: "simple"
+    in_channels: 3
+    out_ch: 3
+    ch: 128
+    ch_mult: [1, 1, 2, 2, 4, 4]
+    num_res_blocks: 2
+    attn_resolutions: [16, ]
+    dropout: 0.0
+    var_type: fixedlarge
+    ema_rate: 0.9
+    ema: True
+    resamp_with_conv: True
+    initial_checkpoint: "ckpt/CHURCH.ckpt"
+  classifier:
+    initial_checkpoint: "ckpt/CHURCH2HAUNTED_classifier.pt"
+  adapter:
+    drop: 0.1
+    dim: 32
+    num_heads: 2
+
+dm:
+  schedule_name: linear
+  num_diffusion_timesteps: 1000
+  sample_timesteps: 500
+  beta_start: 0.0001
+  beta_end: 0.02
+  eta: 1.0
+
+train:
+  iteration: 500
+  lr: 1e-4
+  warmup_lr_rate: 0.1
+  warmup_iteration_rate: 0.2
+  min_lr_rate: 0.5
+
+tl:
+  classifier: True
+  ad_train: True
+  ad_omega: 0.02
+  ad_num_iter: 10
+  c: 5
+
+opt:
+  betas: (0.5, 0.999)
+  weight_decay: 1e-2
+  clip_grad: 1.0
+
+workers: 6
+seed: 1228
+log_freq: 1
+save_freq: 20
