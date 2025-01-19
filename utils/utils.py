@@ -12,7 +12,7 @@ from torch.nn.parallel import DistributedDataParallel
 from configs.config import parse_option
 from utils.logger import create_logger
 
-def save_checkpoint(filepath, model, optimizer, others=None):
+def save(filepath, model, optimizer, others=None):
     # Prepare the state dictionary
 checkpoint = {
         'model_state_dict': model.state_dict(),
@@ -25,24 +25,12 @@ checkpoint = {
     print(f"Checkpoint saved to {filepath}")
 
 
-def load_checkpoint(filepath, model, optimizer=None, scheduler=None):
-    # Load the state dictionary
-    checkpoint = torch.load(file_path)
-    
-    # Load model state
-    model.load_state_dict(checkpoint['model_state_dict'])
-    
-    # If an optimizer is provided, load its state
-    if optimizer:
-        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+def load(filepath, map_location = 'cpu'):
+    filepath = Path(filepath)
+    checkpoint = torch.load(filepath, map_location=map_location)
+    print(f"Checkpoint loaded from {filepath}.")
+    return checkpoint
 
-    if scheduler and 'scheduler_state_dict' in checkpoint:
-        scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
-        print("Scheduler state loaded.")
-
-    epoch = checkpoint.get('epoch', 0)
-    # Return the epoch for resuming training
-    return checkpoint['epoch']
 
 def multi_process_setup(local_rank):
     """
