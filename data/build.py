@@ -8,7 +8,7 @@ import torchvision
 from torchvision.transforms import CenterCrop, Compose, InterpolationMode, Normalize, \
     RandomHorizontalFlip, Resize, ToTensor
 
-def build_loader(config):
+def build_loader(config): 
     dsets = dict()
     dset_loaders = dict()
 
