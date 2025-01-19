@@ -12,18 +12,17 @@ from torch.nn.parallel import DistributedDataParallel
 from configs.config import parse_option
 from utils.logger import create_logger
 
-def save_checkpoint(filepath, model, optimizer, epoch, scheduler=None):
+def save_checkpoint(filepath, model, optimizer, others=None):
     # Prepare the state dictionary
-    state = {
+checkpoint = {
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
-        'epoch': epoch
     }
-    # Save the state dictionary
-     if scheduler:
-        checkpoint['scheduler_state_dict'] = scheduler.state_dict()
+    if others:
+        checkpoint['others'] = others
 
-    torch.save(state, file_path)
+    torch.save(checkpoint, filepath)
+    print(f"Checkpoint saved to {filepath}")
 
 
 def load_checkpoint(filepath, model, optimizer=None, scheduler=None):
