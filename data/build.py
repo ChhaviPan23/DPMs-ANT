@@ -8,6 +8,26 @@ import torchvision
 from torchvision.transforms import CenterCrop, Compose, InterpolationMode, Normalize, \
     RandomHorizontalFlip, Resize, ToTensor
 
+
+class FastDataLoader:
+    def __init__(self, dataset, sampler=None, batch_size=32, num_workers=4, pin_memory=False, drop_last=False, shuffle=False):
+        self.loader = DataLoader(
+            dataset,
+            batch_size=batch_size,
+            sampler=sampler,
+            shuffle=shuffle if sampler is None else False,
+            num_workers=num_workers,
+            pin_memory=pin_memory,
+            drop_last=drop_last,
+        )
+
+    def __iter__(self):
+        return iter(self.loader)
+
+    def __len__(self):
+        return len(self.loader)
+
+
 def build_loader(config):
     dsets = dict()
     dset_loaders = dict()
@@ -28,7 +48,7 @@ def build_loader(config):
                                                   rank=global_rank,
                                                   shuffle=True)
 
-        dset_loaders['train_source'] = FFDataLoader(
+        dset_loaders['train_source'] = FastDataLoader(
             dataset=dsets['train_source'],
             sampler=sampler_train_source,
             batch_size=config.model.batch_size,
