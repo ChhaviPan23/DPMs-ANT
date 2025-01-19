@@ -4,6 +4,7 @@ import torch.distributed as dist
 from timm.data import create_transform
 from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 from torch.utils.data.distributed import DistributedSampler
+from torch.utils.data import DataLoader
 import torchvision
 from torchvision.transforms import CenterCrop, Compose, InterpolationMode, Normalize, \
     RandomHorizontalFlip, Resize, ToTensor
