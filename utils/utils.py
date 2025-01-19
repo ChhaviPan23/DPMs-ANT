@@ -6,7 +6,6 @@ import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
-from hfai.checkpoint import load, save
 from torch.nn.parallel import DistributedDataParallel
 
 from configs.config import parse_option
