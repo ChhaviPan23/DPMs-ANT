@@ -2,14 +2,15 @@ import datetime
 import shutil
 import time
 from pathlib import Path
-
+import os
+import numpy as np
 import math
 import torch
 import torch.distributed as dist
 from timm.optim import create_optimizer_v2
 from timm.utils import AverageMeter
 from torch.cuda.amp import GradScaler, autocast
-
+import PIL
 from data import build_loader
 from model import build_classifier
 from utils import create_scheduler, auto_resume, optimizer_kwargs, \
@@ -50,6 +51,7 @@ def main(local_rank):
     dset_loaders["train"].sampler.set_epoch(start_iteration)
     iterations = config.train.iteration
 
+
     s_time = time.time()
     logger.info(f"==============>Start train model....................")
     for epoch in range(start_iteration, iterations):
@@ -67,7 +69,7 @@ def main(local_rank):
                             name=f"latest.pt")
 
             if dist.get_rank() == 0:
-                shutil.copytree(Path(config.output).joinpath(f"latest.pt"),
+                shutil.copy(Path(config.output).joinpath(f"latest.pt"),
                                 Path(config.output).joinpath(f"iteration_{epoch}.pt"))
 
         lr_scheduler.step(epoch + 1)
